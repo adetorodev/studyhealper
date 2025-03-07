@@ -3,6 +3,7 @@ package com.ezadetoro.studyhelper.presentation.dashboard
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -30,9 +33,19 @@ import androidx.compose.ui.unit.dp
 import com.ezadetoro.studyhelper.R
 import com.ezadetoro.studyhelper.domain.model.Subject
 import com.ezadetoro.studyhelper.presentation.components.CountCard
+import com.ezadetoro.studyhelper.presentation.components.SubjectCard
 
 @Composable
 fun DashboardScreen() {
+
+    val subjects = listOf(
+        Subject("Maths", 10f, Subject.subjectCardColors[0]),
+        Subject("Physics", 10f, Subject.subjectCardColors[1]),
+        Subject("Computer", 10f, Subject.subjectCardColors[2]),
+        Subject("Stats", 10f, Subject.subjectCardColors[3]),
+        Subject("Fine Arts", 10f, Subject.subjectCardColors[4 % Subject.subjectCardColors.size]),
+    )
+
     Scaffold(
         topBar = { DashboardTopAppbar() }
     ) { paddingValues ->
@@ -52,7 +65,7 @@ fun DashboardScreen() {
             item {
                 SubjectCardSection(
                     modifier = Modifier.fillMaxWidth(),
-                    subjectList = emptyList()
+                    subjectList = subjects
                 )
             }
         }
@@ -133,6 +146,18 @@ private fun SubjectCardSection(
 
             )
 
+        }
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(start = 12.dp, end = 12.dp)
+        ) {
+            items(subjectList){ subject ->
+                SubjectCard(
+                    subjectName = subject.name,
+                    gradientColors = subject.color,
+                    onclick = {}
+                )
+            }
         }
     }
 }
