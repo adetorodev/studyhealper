@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -149,11 +150,20 @@ fun DashboardScreen() {
     )
 
     var isAddSubjectDialogOpen by rememberSaveable { mutableStateOf(false) }
+    var subjectName by remember { mutableStateOf("") }
+    var goalHours by remember { mutableStateOf("") }
+    var selectedColor by remember { mutableStateOf(Subject.subjectCardColors.random()) }
 
     AddSubjectDialog(
         isOpen = isAddSubjectDialogOpen,
         onDismissRequest = { isAddSubjectDialogOpen = false},
-        onConfirmButtonClick = { isAddSubjectDialogOpen = false}
+        onConfirmButtonClick = { isAddSubjectDialogOpen = false},
+        subjectName = subjectName,
+        goalHours = goalHours,
+        onSubjectNameChange = { subjectName = it},
+        onGoalHoursChange = { goalHours = it},
+        onColoChange = { selectedColor = it },
+        selectedColors = selectedColor,
     )
 
     Scaffold(
@@ -166,7 +176,9 @@ fun DashboardScreen() {
         ) {
             item {
                 CountCardSection(
-                    modifier = Modifier.fillMaxWidth().padding(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
                     subjectCount = 5,
                     studiesHours = "10",
                     goalHours = "12"
@@ -182,7 +194,9 @@ fun DashboardScreen() {
             item {
                 Button(
                     onClick = {},
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 48.dp, vertical = 20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 48.dp, vertical = 20.dp)
                 ) {
                     Text(text="Start Study Session")
                 }
@@ -272,7 +286,9 @@ private fun SubjectCardSection(
         }
         if(subjectList.isEmpty()){
             Image(
-                modifier = Modifier.size(120.dp).align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .size(120.dp)
+                    .align(Alignment.CenterHorizontally),
                 painter = painterResource(R.drawable.img_books),
                 contentDescription = "No Subject"
             )
