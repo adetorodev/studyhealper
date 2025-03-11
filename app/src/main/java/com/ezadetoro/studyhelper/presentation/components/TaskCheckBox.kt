@@ -30,7 +30,7 @@ fun TaskCheckBox(
             .border(2.dp, borderColor, CircleShape),
         contentAlignment = Alignment.Center
     ){
-        AnimatedVisibility(visibile = isComplete){
+        AnimatedVisibility(visible = isComplete){
             Icon(
                 modifier = Modifier.size(12.dp),
                 imageVector = Icons.Rounded.Check,

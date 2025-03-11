@@ -10,7 +10,8 @@ import com.ezadetoro.studyhelper.presentation.theme.gradient5
 data class Subject(
     val name: String,
     val goalHour: Float,
-    val color: List<Color>
+    val color: List<Color>,
+    val subjectId: Int
 
 ){
     companion object {

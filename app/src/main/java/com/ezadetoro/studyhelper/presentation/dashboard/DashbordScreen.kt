@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,20 +33,114 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ezadetoro.studyhelper.R
+import com.ezadetoro.studyhelper.domain.model.Session
 import com.ezadetoro.studyhelper.domain.model.Subject
+import com.ezadetoro.studyhelper.domain.model.Task
 import com.ezadetoro.studyhelper.presentation.components.CountCard
 import com.ezadetoro.studyhelper.presentation.components.SubjectCard
+import com.ezadetoro.studyhelper.presentation.components.studySessionsList
 import com.ezadetoro.studyhelper.presentation.components.tasksList
 
 @Composable
 fun DashboardScreen() {
 
     val subjects = listOf(
-        Subject("Maths", 10f, Subject.subjectCardColors[0]),
-        Subject("Physics", 10f, Subject.subjectCardColors[1]),
-        Subject("Computer", 10f, Subject.subjectCardColors[2]),
-        Subject("Stats", 10f, Subject.subjectCardColors[3]),
-        Subject("Fine Arts", 10f, Subject.subjectCardColors[4 % Subject.subjectCardColors.size]),
+        Subject("Maths", 10f, Subject.subjectCardColors[0], subjectId = 0),
+        Subject("Physics", 10f, Subject.subjectCardColors[1], subjectId = 1),
+        Subject("Computer", 10f, Subject.subjectCardColors[2], subjectId = 2),
+        Subject("Stats", 10f, Subject.subjectCardColors[3], subjectId = 3),
+        Subject("Fine Arts", 10f, Subject.subjectCardColors[4 % Subject.subjectCardColors.size], subjectId = 4),
+    )
+
+    val tasks = listOf(
+        Task(
+            title = "Prepare Notes",
+            description = "",
+            dueDate = 0L,
+            priority = 0,
+            relatedToSubject = "",
+            isComplete = false,
+            taskId = 1,
+            taskSubjectId = 0
+        ),
+        Task(
+            title = "Do Home Work",
+            description = "",
+            dueDate = 0L,
+            priority = 1,
+            relatedToSubject = "",
+            isComplete = true,
+            taskId = 1,
+            taskSubjectId = 1
+        ),
+        Task(
+            title = "Footbal practice",
+            description = "",
+            dueDate = 0L,
+            priority = 2,
+            relatedToSubject = "",
+            isComplete = false,
+            taskId = 1,
+            taskSubjectId = 2
+        ),
+        Task(
+            title = "Go Coaching",
+            description = "",
+            dueDate = 0L,
+            priority = 0,
+            relatedToSubject = "",
+            isComplete = true,
+            taskId = 1,
+            taskSubjectId = 3
+        ),
+        Task(
+            title = "Write poem",
+            description = "",
+            dueDate = 0L,
+            priority = 2,
+            relatedToSubject = "",
+            isComplete = true,
+            taskId = 1,
+            taskSubjectId = 4
+        )
+    )
+
+    val sessions = listOf(
+        Session(
+            sessionSubjectId = 0,
+            relatedToSubject = "Maths",
+            date = 0L,
+            duration = 2,
+            sessionId = 0
+        ),
+        Session(
+            sessionSubjectId = 0,
+            relatedToSubject = "Physics",
+            date = 0L,
+            duration = 2,
+            sessionId = 0
+        ),
+        Session(
+            sessionSubjectId = 0,
+            relatedToSubject = "Computer",
+            date = 0L,
+            duration = 2,
+            sessionId = 0
+        ),
+        Session(
+            sessionSubjectId = 0,
+            relatedToSubject = "Stats",
+            date = 0L,
+            duration = 2,
+            sessionId = 0
+        ),
+        Session(
+            sessionSubjectId = 0,
+            relatedToSubject = "Fine Arts",
+            date = 0L,
+            duration = 2,
+            sessionId = 0
+        ),
     )
 
     Scaffold(
@@ -82,8 +177,20 @@ fun DashboardScreen() {
                 sectionTitle = "Today's Tasks",
                 emptyListText = "You do not have any upcoming task.\n " +
                         "Click the + button in subject screen to add new task",
-                tasks = emptyList()
+                tasks = tasks,
+                onTaskCardClick = {},
+                onCheckBoxClick = {},
 
+            )
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+            studySessionsList(
+                sectionTitle = "Recent Study Sessions",
+                emptyListText = "You do not have any study session.\n " +
+                        "Click the + button to start a new study session",
+                sessions = sessions,
+                onDeleteIconClick = {}
             )
         }
     }
