@@ -19,6 +19,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -40,6 +44,18 @@ fun AddSubjectDialog(
     onSubjectNameChange: (String) -> Unit,
     onGoalHoursChange: (String) -> Unit
 ) {
+
+    var goalHourError by rememberSaveable { mutableStateOf((null)) }
+    var subjectNamesError by rememberSaveable { mutableStateOf((null)) }
+
+    subjectNameEror = when{
+        subjectName.isBlack() -> "Please enter subject name"
+        subjectName.length < 2 -> "Subject name is too short"
+        subjectName.length > 20 -> "Subject name is too long"
+
+        else -> null
+    }
+
     if (isOpen) {
         AlertDialog(
             onDismissRequest = onDismissRequest,
