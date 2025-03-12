@@ -45,13 +45,22 @@ fun AddSubjectDialog(
     onGoalHoursChange: (String) -> Unit
 ) {
 
-    var goalHourError by rememberSaveable { mutableStateOf((null)) }
-    var subjectNamesError by rememberSaveable { mutableStateOf((null)) }
+    var goalHourError by rememberSaveable { mutableStateOf<String?>(null) }
+    var subjectNamesError by rememberSaveable { mutableStateOf<String?>(null) }
 
-    subjectNameEror = when{
-        subjectName.isBlack() -> "Please enter subject name"
+    subjectNamesError = when{
+        subjectName.isBlank() -> "Please enter subject name"
         subjectName.length < 2 -> "Subject name is too short"
         subjectName.length > 20 -> "Subject name is too long"
+
+        else -> null
+    }
+
+    goalHourError = when{
+        goalHours.isBlank() -> "Please enter study goal hour"
+        goalHours.toFloatOrNull() == null -> "Please enter a valid number"
+        goalHours.toFloat() < 1f -> "Please set at least 1 hour"
+        goalHours.toFloat() > 1000f -> "Please set a maximum of 1000 hours"
 
         else -> null
     }
@@ -85,7 +94,9 @@ fun AddSubjectDialog(
                         value = subjectName,
                         onValueChange = onSubjectNameChange,
                         label = { Text(text="Subject Name")},
-                        singleLine  = true
+                        singleLine  = true,
+                        isError = subjectNamesError != null && subjectName.isNotBlank(),
+                        supportingText = {Text(text = subjectNamesError.orEmpty())}
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     OutlinedTextField(
@@ -93,12 +104,17 @@ fun AddSubjectDialog(
                         onValueChange = onGoalHoursChange,
                         label = { Text(text="Goal Study Hours")},
                         singleLine  = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        isError = goalHourError != null && goalHours.isNotBlank(),
+                        supportingText = {Text(text = goalHourError.orEmpty())}
                     )
                 }
             },
             confirmButton = {
-                TextButton(onClick = onConfirmButtonClick ) {
+                TextButton(
+                    onClick = onConfirmButtonClick,
+                    enabled = subjectNamesError == null && goalHourError == null
+                ) {
                     Text(text= "Save")
                 }
             },
