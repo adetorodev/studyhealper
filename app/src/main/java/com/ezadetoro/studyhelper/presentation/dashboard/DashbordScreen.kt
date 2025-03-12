@@ -43,6 +43,7 @@ import com.ezadetoro.studyhelper.domain.model.Subject
 import com.ezadetoro.studyhelper.domain.model.Task
 import com.ezadetoro.studyhelper.presentation.components.AddSubjectDialog
 import com.ezadetoro.studyhelper.presentation.components.CountCard
+import com.ezadetoro.studyhelper.presentation.components.DeleteDialog
 import com.ezadetoro.studyhelper.presentation.components.SubjectCard
 import com.ezadetoro.studyhelper.presentation.components.studySessionsList
 import com.ezadetoro.studyhelper.presentation.components.tasksList
@@ -150,6 +151,9 @@ fun DashboardScreen() {
     )
 
     var isAddSubjectDialogOpen by rememberSaveable { mutableStateOf(false) }
+
+    var isDeleteDialogOpen by rememberSaveable { mutableStateOf(false) }
+
     var subjectName by remember { mutableStateOf("") }
     var goalHours by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(Subject.subjectCardColors.random()) }
@@ -164,6 +168,14 @@ fun DashboardScreen() {
         onGoalHoursChange = { goalHours = it},
         onColoChange = { selectedColor = it },
         selectedColors = selectedColor,
+    )
+    DeleteDialog(
+        isOpen = isDeleteDialogOpen,
+        title = "Delete Session?",
+        bodyText = "Are you sure you want to delete this Session? Your studied hours will be reduced" +
+        "by this session time. This action can not be undone",
+        onDismissRequest = { isDeleteDialogOpen = false},
+        onConfirmButtonClick = { isDeleteDialogOpen = false}
     )
 
     Scaffold(
@@ -218,7 +230,7 @@ fun DashboardScreen() {
                 emptyListText = "You do not have any study session.\n " +
                         "Click the + button to start a new study session",
                 sessions = sessions,
-                onDeleteIconClick = {}
+                onDeleteIconClick = {isDeleteDialogOpen = true }
             )
         }
     }
